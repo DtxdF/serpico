@@ -1,0 +1,36 @@
+[build-system]
+requires = ["uv_build >= 0.9.24, <0.10.0"]
+build-backend = "uv_build"
+[project]
+name = "serpico"
+version = "0.1.0"
+description = "Security scanner for FreeBSD packages and releases"
+readme = "README.md"
+authors = [
+    { name = "Jesús Daniel Colmenares Oviedo", email = "DtxdF@disroot.org" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "nvdlib>=0.8.3",
+    "xmltodict>=1.0.2",
+]
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+keywords = ["security", "freebsd", "bsd", "scanner", "devsecops"]
+classifiers = [
+    "Intended Audience :: System Administrators",
+    "Environment :: Console",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX :: BSD :: FreeBSD",
+    "Topic :: Security",
+    "Topic :: Utilities",
+    "Topic :: System :: Monitoring"
+]
+[project.urls]
+Homepage = "https://github.com/DtxdF/serpico"
+Documentation = "https://github.com/DtxdF/serpico"
+Repository = "https://github.com/DtxdF/serpico"
+Issues = "https://github.com/DtxdF/serpico/issues"
+Changelog = "https://github.com/DtxdF/serpico/releases"
+[project.scripts]
+serpico = "serpico:main"

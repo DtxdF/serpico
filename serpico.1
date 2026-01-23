@@ -1,0 +1,113 @@
+.\"Copyright (c) 2026, Jesús Daniel Colmenares Oviedo <DtxdF@disroot.org>
+.\"All rights reserved.
+.\"
+.\"Redistribution and use in source and binary forms, with or without
+.\"modification, are permitted provided that the following conditions are met:
+.\"
+.\"* Redistributions of source code must retain the above copyright notice, this
+.\"  list of conditions and the following disclaimer.
+.\"
+.\"* Redistributions in binary form must reproduce the above copyright notice,
+.\"  this list of conditions and the following disclaimer in the documentation
+.\"  and/or other materials provided with the distribution.
+.\"
+.\"* Neither the name of the copyright holder nor the names of its
+.\"  contributors may be used to endorse or promote products derived from
+.\"  this software without specific prior written permission.
+.\"
+.\"THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+.\"AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\"IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+.\"DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+.\"FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\"DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\"SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\"CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+.\"OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+.\"OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.Dd January 23, 2026
+.Dt SERPICO 1
+.Os
+.Sh NAME
+.Nm serpico
+.Nd Security scanner for FreeBSD packages and releases
+.Sh SYNOPSIS
+.Nm
+.Op Fl Fl scan-jails
+.Op Fl Fl no-fetch-audit-db
+.Op Fl Fl category Ar CATEGORY
+.Op Fl Fl security-feed Ar SECURITY_FEED
+.Op Fl Fl nvd-api-key Ar NVD_API_KEY
+.Op Fl Fl nvd-api-key-file Ar NVD_API_KEY_FILE
+.Op Fl Fl nvd-request-delay Ar NVD_REQUEST_DELAY
+.Op Fl Fl cve-description-lang Ar CVE_DESCRIPTION_LANG
+.Sh DESCRIPTION
+.Nm
+is a security scanner for FreeBSD packages and releases that
+compares the versions against a list of versions marked as vulnerable,
+then displays vulnerability information in a JSON-compact format for
+easy analysis by other security tools.
+.Pp
+.Bl -tag -width xxx
+.It Fl Fl scan-jails
+.Nm
+only scans the host. With this option, jails with a
+.Sy meta
+set to
+.Qq meta.serpico=1
+are taken into account for analysis. Please note that only
+.Sy ALPHA Ns , Sy BETA Ns , Sy RC Ns , and Sy RELEASE
+can be analyzed in this way; the others are ignored and a warning is
+displayed.
+.It Fl Fl no-fetch-audit-db
+By default,
+.Nm
+will fetch and update the audit database before performing an analysis.
+This option disables this behavior, but keep in mind that if you have
+not retrieved the database, this will cause an error.
+.It Fl Fl category Ar CATEGORY
+Comma-separated list of scan types.
+.Pp
+There are three categories implemented in
+.Nm Ns :
+.Pp
+.Bl -enum -offset 8 -compact
+.It
+.Sy package Ns :
+Check if there are any vulnerable packages currently installed.
+.It
+.Sy release Ns :
+Check if the current version of this system is vulnerable.
+.It
+.Sy all Ns :
+Perform all of the analyses mentioned above. This is the default option.
+.El
+.It Fl Fl security-feed Ar SECURITY_FEED
+Location of the FreeBSD security feed for retrieving security
+advisories.
+The default is
+.Lk https://www.freebsd.org/security/feed.xml
+.It Fl Fl nvd-api-key Ar NVD_API_KEY
+NVD API key for making requests.
+.Pp
+You can make HTTP requests without an API key, but this has some
+limitations and is slower.
+.It Fl Fl nvd-api-key-file Ar NVD_API_KEY_FILE
+Same as
+.Fl Fl nvd-api-key Ns ,
+but reads the first line of the specified file instead of passing the
+API key through the command line. Only one parameter can be specified,
+and this takes precedence.
+.It Fl Fl nvd-request-delay Ar NVD_REQUEST_DELAY
+Delay between requests.
+.It Fl Fl cve-description-lang Ar CVE_DESCRIPTION_LANG
+Preferred language for displaying CVE description. If the specified language
+is not found, fallback to
+.Sy en
+.Po english Pc Ns .
+.El
+.Sh SEE ALSO
+.Xr jail 8
+.Xr pkg-audit 8
+.Sh AUTHORS
+.An Jesús Daniel Colmenares Oviedo Aq Mt DtxdF@disroot.org
