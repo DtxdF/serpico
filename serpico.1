@@ -25,7 +25,7 @@
 .\"CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 .\"OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 .\"OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-.Dd January 23, 2026
+.Dd January 24, 2026
 .Dt SERPICO 1
 .Os
 .Sh NAME
@@ -40,7 +40,7 @@
 .Op Fl Fl nvd-api-key Ar NVD_API_KEY
 .Op Fl Fl nvd-api-key-file Ar NVD_API_KEY_FILE
 .Op Fl Fl nvd-request-delay Ar NVD_REQUEST_DELAY
-.Op Fl Fl cve-lang Ar CVE_DESCRIPTION_LANG
+.Op Fl Fl cve-lang Ar CVE_LANG
 .Sh DESCRIPTION
 .Nm
 is a security scanner for FreeBSD packages and releases that
@@ -100,7 +100,7 @@ API key through the command line. Only one parameter can be specified,
 and this takes precedence.
 .It Fl Fl nvd-request-delay Ar NVD_REQUEST_DELAY
 Delay between requests.
-.It Fl Fl cve-lang Ar CVE_DESCRIPTION_LANG
+.It Fl Fl cve-lang Ar CVE_LANG
 Preferred language for displaying CVE information is available. If the
 specified language is not found, fallback to
 .Sy en
