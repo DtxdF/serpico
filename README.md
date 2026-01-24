@@ -35,6 +35,16 @@ On the agent side, you must add the following to your `ossec.conf`:
 </wodle>
 ```
 
+### Wazuh Dashboard
+
+![](assets/shots/first.png)
+![](assets/shots/second.png)
+![](assets/shots/third.png)
+
+Thanks to [Nicolas Curioni](https://groups.google.com/g/wazuh/c/N6-t0jTaBrY/m/8v3HMzgJBAAJ), we have a handy dashboard to display a summary of our systems' vulnerabilities. I just edited the ndjson so that the parameters match those used by Serpico.
+
+To install **FreeBSD VD Dashboard** simply click the hamburger button and select `Dashboard Management > Saved Objects`, then import the [ndjson](wazuh-dashboard/FreeBSD_VD_Dashboard.ndjson) file.
+
 ## Documentation
 
 * `man 1 serpico`
