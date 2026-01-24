@@ -53,6 +53,7 @@ REGEX_META = r"^([^=]+)=(.+)$"
 REGEX_FREEBSD_RELEASE = r"^(\d+\.\d+-\w+)(?:-p\d+)?$"
 REGEX_STAGE_LEVEL = r"^[a-zA-Z]+(\d)$"
 REGEX_PATCH_LEVEL = r"^-p(\d+)$"
+REGEX_PKG_ARCH = r"^FreeBSD:\d+:(?:\w+|\*)$"
 
 # Scanner methods
 VULN_SCANNER_PACKAGE = "package"
@@ -70,19 +71,53 @@ SECURITY_FEED = "https://www.freebsd.org/security/feed.xml"
 # key-mapping
 KEY_PACKAGE_NAME = "serpico.package.name"
 KEY_PACKAGE_VERSION ="serpico.package.version"
+KEY_PACKAGE_ARCHITECTURE = "serpico.package.architecture"
 KEY_PACKAGE_CATEGORY = "serpico.package.category"
+KEY_PACKAGE_GENERATED_CPE = "serpico.package.generated_cpe"
+KEY_PACKAGE_CONDITION = "serpico.package.condition"
+KEY_VULN_TITLE = "serpico.vulnerability.title"
+KEY_VULN_ASSIGNER = "serpico.vulnerability.assigner"
 KEY_VULN_ID = "serpico.vulnerability.cve"
+KEY_VULN_VERSION = "serpico.vulnerability.cve_version"
 KEY_VULN_DESCRIPTION = "serpico.vulnerability.description"
 KEY_VULN_SEVERITY = "serpico.vulnerability.severity"
 KEY_VULN_SCORE = "serpico.vulnerability.score"
-KEY_VULN_REFERENCE = "serpico.vulnerability.reference"
+KEY_VULN_URL = "serpico.vulnerability.url"
+KEY_VULN_REFERENCES = "serpico.vulnerability.references"
 KEY_VULN_PUBLISHED_AT = "serpico.vulnerability.published_at"
 KEY_VULN_STATUS = "serpico.vulnerability.status"
+KEY_VULN_UPDATED = "serpico.vulnerability.updated"
+KEY_VULN_CWE_REFERENCES = "serpico.vulnerability.cwe_references"
+KEY_VULN_ASSIGNER = "serpico.vulnerability.assigner"
+KEY_VULN_CVSS_CVSS2_BASE_SCORE = "serpico.vulnerability.cvss.cvss2.base_score"
+KEY_VULN_CVSS_CVSS2_EXPLOITABILITY_SCORE = "serpico.vulnerability.cvss.cvss2.exploitability_score"
+KEY_VULN_CVSS_CVSS2_IMPACT_SCORE = "serpico.vulnerability.cvss.cvss2.impact_score"
+KEY_VULN_CVSS_CVSS2_VECTOR_ACCESS_COMPLEXITY = "serpico.vulnerability.cvss.cvss2.vector.access_complexity"
+KEY_VULN_CVSS_CVSS2_VECTOR_ATTACK_VECTOR = "serpico.vulnerability.cvss.cvss2.vector.attack_vector"
+KEY_VULN_CVSS_CVSS2_VECTOR_AUTHENTICATION = "serpico.vulnerability.cvss.cvss2.vector.authentication"
+KEY_VULN_CVSS_CVSS2_VECTOR_AVAILABILITY = "serpico.vulnerability.cvss.cvss2.vector.availability"
+KEY_VULN_CVSS_CVSS2_VECTOR_CONFIDENTIALITY_IMPACT = "serpico.vulnerability.cvss.cvss2.vector.confidentiality_impact"
+KEY_VULN_CVSS_CVSS2_VECTOR_INTEGRITY_IMPACT = "serpico.vulnerability.cvss.cvss2.vector.integrity_impact"
+KEY_VULN_CVSS_CVSS2_VECTOR_PRIVILEGES_REQUIRED = "serpico.vulnerability.cvss.cvss2.vector.privileges_required"
+KEY_VULN_CVSS_CVSS2_VECTOR_SCOPE = "serpico.vulnerability.cvss.cvss2.vector.scope"
+KEY_VULN_CVSS_CVSS2_VECTOR_USER_INTERACTION = "serpico.vulnerability.cvss.cvss2.vector.user_interaction"
+KEY_VULN_CVSS_CVSS3_BASE_SCORE = "serpico.vulnerability.cvss.cvss3.base_score"
+KEY_VULN_CVSS_CVSS3_EXPLOITABILITY_SCORE = "serpico.vulnerability.cvss.cvss3.exploitability_score"
+KEY_VULN_CVSS_CVSS3_IMPACT_SCORE = "serpico.vulnerability.cvss.cvss3.impact_score"
+KEY_VULN_CVSS_CVSS3_VECTOR_ACCESS_COMPLEXITY = "serpico.vulnerability.cvss.cvss3.vector.access_complexity"
+KEY_VULN_CVSS_CVSS3_VECTOR_ATTACK_VECTOR = "serpico.vulnerability.cvss.cvss3.vector.attack_vector"
+KEY_VULN_CVSS_CVSS3_VECTOR_AUTHENTICATION = "serpico.vulnerability.cvss.cvss3.vector.authentication"
+KEY_VULN_CVSS_CVSS3_VECTOR_AVAILABILITY = "serpico.vulnerability.cvss.cvss3.vector.availability"
+KEY_VULN_CVSS_CVSS3_VECTOR_CONFIDENTIALITY_IMPACT = "serpico.vulnerability.cvss.cvss3.vector.confidentiality_impact"
+KEY_VULN_CVSS_CVSS3_VECTOR_INTEGRITY_IMPACT = "serpico.vulnerability.cvss.cvss3.vector.integrity_impact"
+KEY_VULN_CVSS_CVSS3_VECTOR_PRIVILEGES_REQUIRED = "serpico.vulnerability.cvss.cvss3.vector.privileges_required"
+KEY_VULN_CVSS_CVSS3_VECTOR_SCOPE = "serpico.vulnerability.cvss.cvss3.vector.scope"
+KEY_VULN_CVSS_CVSS3_VECTOR_USER_INTERACTION = "serpico.vulnerability.cvss.cvss3.vector.user_interaction"
 KEY_JAIL = "serpico.jail"
 
 # Default language for CVE descriptions
-CVE_DESCRIPTION_LANG = "en"
-CVE_DESCRIPTION_LANG_FALLBACK = "en"
+CVE_LANG = "en"
+CVE_LANG_FALLBACK = "en"
 
 # Time / Date
 STRFTIME_STARTING_TIME = "%Y-%m-%d %H:%M %Z"
@@ -90,6 +125,8 @@ STRFTIME_STARTING_TIME = "%Y-%m-%d %H:%M %Z"
 # Executables
 PKG_EXECUTABLE = "/usr/sbin/pkg"
 JLS_EXECUTABLE = "/usr/sbin/jls"
+JEXEC_EXECUTABLE = "/usr/sbin/jexec"
+UNAME_EXECUTABLE = "/usr/bin/uname"
 FREEBSD_VERSION_EXECUTABLE = "/bin/freebsd-version"
 
 # Meta keys
@@ -128,7 +165,7 @@ def start():
     parser.add_argument("--nvd-api-key")
     parser.add_argument("--nvd-api-key-file")
     parser.add_argument("--nvd-request-delay", type=float)
-    parser.add_argument("--cve-description-lang", default=CVE_DESCRIPTION_LANG)
+    parser.add_argument("--cve-lang", default=CVE_LANG)
 
     args = parser.parse_args()
 
@@ -158,7 +195,7 @@ def start():
         log_err("Scan category '%s' requires pkg(8) to be bootstrapped!" % VULN_SCANNER_PACKAGE)
         sys.exit(1)
 
-    jails = []
+    jails = {}
 
     if args.scan_jails:
         jails = get_jails()
@@ -167,7 +204,7 @@ def start():
         if scan_method == VULN_SCANNER_PACKAGE:
             run_package_scan({
                 "no-fetch-audit-db" : args.no_fetch_audit_db,
-                "cve-description-lang" : args.cve_description_lang,
+                "cve-lang" : args.cve_lang,
                 "nvd-api-key" : nvd_api_key,
                 "nvd-request-delay" : args.nvd_request_delay
             })
@@ -175,7 +212,7 @@ def start():
             for jail, meta in jails.items():
                 run_package_scan({
                     "no-fetch-audit-db" : args.no_fetch_audit_db,
-                    "cve-description-lang" : args.cve_description_lang,
+                    "cve-lang" : args.cve_lang,
                     "nvd-api-key" : nvd_api_key,
                     "nvd-request-delay" : args.nvd_request_delay,
                     "jail" : jail
@@ -186,7 +223,7 @@ def start():
                 "security-feed" : args.security_feed,
                 "nvd-api-key" : nvd_api_key,
                 "nvd-request-delay" : args.nvd_request_delay,
-                "cve-description-lang" : args.cve_description_lang
+                "cve-lang" : args.cve_lang
             })
 
             for jail, meta in jails.items():
@@ -194,7 +231,7 @@ def start():
                     "security-feed" : args.security_feed,
                     "nvd-api-key" : nvd_api_key,
                     "nvd-request-delay" : args.nvd_request_delay,
-                    "cve-description-lang" : args.cve_description_lang,
+                    "cve-lang" : args.cve_lang,
                     "jail" : jail
                 })
 
@@ -225,7 +262,7 @@ def run_release_scan(options):
 
 def parse_security_feed(options):
     security_feed = options["security-feed"]
-    cve_description_lang = options["cve-description-lang"]
+    cve_lang = options["cve-lang"]
     nvd_api_key = options["nvd-api-key"]
     nvd_request_delay = options["nvd-request-delay"]
     jail = options.get("jail")
@@ -260,13 +297,15 @@ def parse_security_feed(options):
         if len(vulnerabilities) == 0:
             continue
 
-        if not is_vulnerable(security_advisory, jail=jail):
+        corrected = is_vulnerable(security_advisory, jail=jail)
+
+        if corrected is None:
             continue
 
         platform_release = get_platform_release(jail=jail)
         platform_version = get_platform_version(jail=jail)
 
-        log_warn("Found %d vulnerabilities in '%s' (%s)" % (len(vulnerabilities), platform_release, platform_version))
+        log_warn("Found %d vulnerabilities in '%s' ( %s )" % (len(vulnerabilities), platform_release, platform_version))
 
         for vulnerability in vulnerabilities:
             cve_info = get_cve_info(vulnerability, api_key=nvd_api_key,
@@ -278,19 +317,10 @@ def parse_security_feed(options):
                 log_warn("No information was found for '%s'" % vulnerability)
                 continue
 
-            output = {
-                KEY_PACKAGE_NAME : platform_release,
-                KEY_PACKAGE_VERSION : platform_version,
-                KEY_PACKAGE_CATEGORY : VULN_SCANNER_RELEASE,
-                KEY_VULN_ID : vulnerability,
-                KEY_VULN_DESCRIPTION : get_cve_description(cve_info, cve_description_lang),
-                KEY_VULN_SEVERITY : get_cve_severity(cve_info),
-                KEY_VULN_SCORE : get_cve_score(cve_info),
-                KEY_VULN_REFERENCE : cve_info.url,
-                KEY_VULN_PUBLISHED_AT : cve_info.published,
-                KEY_VULN_STATUS : cve_info.vulnStatus,
-                KEY_JAIL : jail
-            }
+            output = format_cve(platform_release, platform_version, VULN_SCANNER_RELEASE, cve_info,
+                cve_lang=cve_lang, jail=jail)
+
+            output[KEY_PACKAGE_CONDITION] = ["< %s" % corrected]
 
             yield output
 
@@ -320,7 +350,7 @@ def run_package_scan(options):
 def _run_package_scan(options):
     nvd_api_key = options["nvd-api-key"]
     nvd_request_delay = options["nvd-request-delay"]
-    cve_description_lang = options["cve-description-lang"]
+    cve_lang = options["cve-lang"]
     no_fetch_audit_db = options["no-fetch-audit-db"]
     jail = options.get("jail")
 
@@ -354,7 +384,7 @@ def _run_package_scan(options):
 
             vulnerabilities = issue["cve"]
 
-            log_warn("Found %d vulnerabilities in '%s' (%s)" % (len(vulnerabilities), pkg_name, pkg_version))
+            log_warn("Found %d vulnerabilities in '%s' ( %s )" % (len(vulnerabilities), pkg_name, pkg_version))
 
             for vulnerability in vulnerabilities:
                 cve_info = get_cve_info(vulnerability, api_key=nvd_api_key,
@@ -364,21 +394,240 @@ def _run_package_scan(options):
                     log_warn("No information was found for '%s'" % vulnerability)
                     continue
 
-                output = {
-                    KEY_PACKAGE_NAME : pkg_name,
-                    KEY_PACKAGE_VERSION : pkg_version,
-                    KEY_PACKAGE_CATEGORY : VULN_SCANNER_PACKAGE,
-                    KEY_VULN_ID : vulnerability,
-                    KEY_VULN_DESCRIPTION : get_cve_description(cve_info, cve_description_lang),
-                    KEY_VULN_SEVERITY : get_cve_severity(cve_info),
-                    KEY_VULN_SCORE : get_cve_score(cve_info),
-                    KEY_VULN_REFERENCE : cve_info.url,
-                    KEY_VULN_PUBLISHED_AT : cve_info.published,
-                    KEY_VULN_STATUS : cve_info.vulnStatus,
-                    KEY_JAIL : jail
-                }
+                output = format_cve(pkg_name, pkg_version, VULN_SCANNER_PACKAGE, cve_info,
+                    cve_lang=cve_lang, jail=jail)
+
+                if "Affected versions" in issue:
+                    output[KEY_PACKAGE_CONDITION] = issue["Affected versions"]
 
                 yield output
+
+def format_cve(package, version, category, cve_info, cve_lang=None, jail=None):
+    output = {
+        KEY_PACKAGE_NAME : package,
+        KEY_PACKAGE_VERSION : version,
+        KEY_PACKAGE_ARCHITECTURE : get_package_architecture(package, version, category, jail=jail),
+        KEY_PACKAGE_CATEGORY : VULN_SCANNER_PACKAGE,
+        KEY_VULN_TITLE : "%s affects %s" % (cve_info.id, package),
+        KEY_VULN_ASSIGNER : cve_info.sourceIdentifier,
+        KEY_VULN_ID : cve_info.id,
+        KEY_VULN_URL : cve_info.url,
+        KEY_VULN_PUBLISHED_AT : cve_info.published,
+        KEY_VULN_STATUS : cve_info.vulnStatus,
+        KEY_VULN_UPDATED : cve_info.lastModified
+    }
+
+    description = get_cve_description(cve_info, cve_lang)
+
+    if description is not None:
+        output[KEY_VULN_DESCRIPTION] = description
+
+    severity = get_cve_severity(cve_info)
+
+    if severity is not None:
+        output[KEY_VULN_SEVERITY] = get_cve_severity(cve_info)
+
+    score = get_cve_score(cve_info)
+
+    if score is not None:
+        output[KEY_VULN_SCORE] = score
+
+    generated_cpe = get_package_cpe(cve_info)
+
+    if generated_cpe is not None:
+        output[KEY_PACKAGE_GENERATED_CPE] = list(get_package_cpe(cve_info))
+
+    cve_version = get_cve_version(cve_info)
+
+    if cve_version is not None:
+        output[KEY_VULN_VERSION] = "%s" % cve_version
+
+    references = get_cve_references(cve_info)
+
+    if references is not None:
+        output[KEY_VULN_REFERENCES] = list(references)
+
+    cwe_references = get_cwe_references(cve_info, cve_lang)
+
+    if cwe_references is not None:
+        output[KEY_VULN_CWE_REFERENCES] = list(cwe_references)
+
+    put_cve_v2metrics(output, cve_info)
+    put_cve_v30metrics(output, cve_info)
+    put_cve_v31metrics(output, cve_info)
+
+    if jail is not None:
+        output[KEY_JAIL] = jail
+
+    return output
+
+def put_cve_v2metrics(data, cve_info):
+    put_metrics(data, cve_info, 2)
+
+def put_cve_v30metrics(data, cve_info):
+    put_metrics(data, cve_info, 30)
+
+def put_cve_v31metrics(data, cve_info):
+    put_metrics(data, cve_info, 31)
+
+def put_metrics(data, cve_info, version):
+    if version != 2 and version != 30 and version != 31:
+        raise NotImplementedError
+
+    if not hasattr(cve_info.metrics, "cvssMetricV%d" % version):
+        return
+
+    metrics = getattr(cve_info.metrics, "cvssMetricV%d" % version)
+
+    if len(metrics) == 0:
+        return
+
+    if version == 2:
+        version_keyword = 2
+
+    else:
+        version_keyword = 3
+
+    metrics = metrics[0]
+    cvssdata = metrics.cvssData
+
+    if hasattr(cvssdata, "baseScore"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_BASE_SCORE" % version_keyword]
+
+        data[keyword] = cvssdata.baseScore
+
+    if hasattr(metrics, "exploitabilityScore"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_EXPLOITABILITY_SCORE" % version_keyword]
+
+        data[keyword] = metrics.exploitabilityScore
+
+    if hasattr(metrics, "impactScore"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_IMPACT_SCORE" % version_keyword]
+
+        data[keyword] = metrics.impactScore
+
+    if hasattr(cvssdata, "accessComplexity"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_ACCESS_COMPLEXITY" % version_keyword]
+
+        data[keyword] = cvssdata.accessComplexity
+
+    if hasattr(cvssdata, "attackVector"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_ATTACK_VECTOR" % version_keyword]
+
+        data[keyword] = cvssdata.attackVector
+
+    if hasattr(cvssdata, "authentication"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_AUTHENTICATION" % version_keyword]
+
+        data[keyword] = cvssdata.authentication
+
+    if hasattr(cvssdata, "availabilityImpact"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_AVAILABILITY" % version_keyword]
+
+        data[keyword] = cvssdata.availabilityImpact
+
+    if hasattr(cvssdata, "confidentialityImpact"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_CONFIDENTIALITY_IMPACT" % version_keyword]
+
+        data[keyword] = cvssdata.confidentialityImpact
+
+    if hasattr(cvssdata, "integrityImpact"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_INTEGRITY_IMPACT" % version_keyword]
+
+        data[keyword] = cvssdata.integrityImpact
+
+    if hasattr(cvssdata, "privilegesRequired"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_PRIVILEGES_REQUIRED" % version_keyword]
+
+        data[keyword] = cvssdata.privilegesRequired
+
+    if hasattr(cvssdata, "scope"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_SCOPE" % version_keyword]
+
+        data[keyword] = cvssdata.scope
+
+    if hasattr(cvssdata, "userInteraction"):
+        keyword = globals()["KEY_VULN_CVSS_CVSS%d_VECTOR_USER_INTERACTION" % version_keyword]
+
+        data[keyword] = cvssdata.userInteraction
+
+def get_cwe_references(cve_info, lang):
+    vulnerability = cve_info.id
+    cwe_references = cve_info.cwe
+
+    if len(cwe_references) == 0:
+        return
+
+    for cwe_reference in cwe_references:
+        if cwe_reference.lang == lang:
+            yield cwe_reference.value
+
+        elif cwe_reference.lang == CVE_LANG_FALLBACK:
+            yield cwe_reference.value
+
+def get_cve_references(cve_info):
+    references = cve_info.references
+
+    if len(references) == 0:
+        return
+
+    for reference in references:
+        url = reference.url
+
+        yield url
+
+def get_cve_version(cve_info):
+    (version, _, _) = cve_info.score
+
+    if version is None:
+        vulnerability = cve_info.id
+        log_warn("CVE version for '%s' has not been found!" % vulnerability)
+
+    version = float("%s.%s" % (version[1], version[2]))
+
+    return version
+
+def get_package_cpe(cve_info):
+    if not hasattr(cve_info, "cpe"):
+        return
+
+    for cpe in cve_info.cpe:
+        yield cpe.criteria
+
+def get_package_architecture(package, version, category, jail=None):
+    if category == VULN_SCANNER_RELEASE:
+        cmd = []
+
+        if jail is not None:
+            cmd.extend([JEXEC_EXECUTABLE, "-l", jail])
+
+        cmd.extend([UNAME_EXECUTABLE, "-m"])
+
+    else:
+        cmd = [PKG_EXECUTABLE]
+
+        if jail is not None:
+            cmd.extend(["-j", jail])
+
+        cmd.extend(["query", "%q", "%s-%s" % (package, version)])
+
+    machine_cmd = subprocess.run(cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True)
+
+    machine = machine_cmd.stdout.strip()
+
+    if machine_cmd.returncode != 0 \
+            or len(machine) == 0:
+        log_warn("Impossible to get hardware platform ( package:%s, version:%s, category:%s, jail:%s )!" % (
+            package, version, category, jail))
+        return
+
+    if re.match(REGEX_PKG_ARCH, machine):
+        machine = machine.split(":")[2]
+
+    return machine
 
 def get_pkg_audit(jail=None):
     cmd = [PKG_EXECUTABLE]
@@ -397,12 +646,12 @@ def get_pkg_audit(jail=None):
         pkg_audit_json = json.loads(pkg_audit.stdout)
 
     except json.decoder.JSONDecodeError:
-        stdout = pkg_audit.stderr.strip()
+        stdout = pkg_audit.stdout.strip()
 
         if jail is None:
             log_warn("pkg-audit(8): %s" % stdout)
         else:
-            log_warn("pkg-audit(8) (jail:%s): %s" % (jail, stdout))
+            log_warn("pkg-audit(8) ( jail:%s ): %s" % (jail, stdout))
 
         return
 
@@ -427,26 +676,22 @@ def fetch_audit_db(jail=None):
             log_warn("pkg-audit(8): %s" % l)
 
         else:
-            log_warn("pkg-audit(8) (jail:%s): %s" % (jail, l))
+            log_warn("pkg-audit(8) ( jail:%s ): %s" % (jail, l))
 
 def get_cve_score(cve_info):
-    vulnerability = cve_info.id
     (_, score, _) = cve_info.score
 
     if score is None:
-        score = 0.0
-
+        vulnerability = cve_info.id
         log_warn("Score for '%s' has not been found!" % vulnerability)
 
     return score
 
 def get_cve_severity(cve_info):
-    vulnerability = cve_info.id
     (_, _, severity) = cve_info.score
 
     if severity is None:
-        severity = ""
-
+        vulnerability = cve_info.id
         log_warn("Severity for '%s' has not been found!" % vulnerability)
 
     return severity
@@ -457,9 +702,9 @@ def get_cve_description(cve_info, lang):
 
     if len(descriptions) == 0:
         log_warn("There is no descriptions available for '%s'" % vulnerability)
-        return ""
+        return
 
-    fallback_lang = CVE_DESCRIPTION_LANG_FALLBACK
+    fallback_lang = CVE_LANG_FALLBACK
     fallback_description = None
 
     for description in descriptions:
@@ -471,7 +716,7 @@ def get_cve_description(cve_info, lang):
 
     if fallback_description is None:
         log_warn("There is no descriptions available for '%s'" % vulnerability)
-        return ""
+        return
 
     return fallback_description
 
@@ -494,7 +739,10 @@ def is_vulnerable(content, jail=None):
             if vulnerable is None:
                 continue
 
-            return vulnerable
+            if not vulnerable:
+                return
+
+            return corrected
 
     else:
         for corrected in get_non_stable_releases_from_advisory(content):
@@ -503,9 +751,10 @@ def is_vulnerable(content, jail=None):
             if vulnerable is None:
                 continue
 
-            return vulnerable
+            if not vulnerable:
+                return
 
-    return False
+            return corrected
 
 def is_non_stable_vulnerable(release, jail=None):
     corrected_parsed = re.findall(REGEX_NON_STABLE_RELEASE, release)
@@ -572,7 +821,7 @@ def is_non_stable_vulnerable(release, jail=None):
         current_patch_level = get_patch_level(current_patch)
 
         if patch_level is None:
-            log_warn("A corrected release must contain the patch level! (jail:%s, corrected:%s)" % (
+            log_warn("A corrected release must contain the patch level! ( jail:%s, corrected:%s )" % (
                 jail, release))
             return False
 
@@ -582,7 +831,7 @@ def is_non_stable_vulnerable(release, jail=None):
         return current_patch_level < patch_level
 
     else:
-        log_warn("Unsupported stage '%s' (jail:%s, corrected:%s)" % (current_stage, jail, release))
+        log_warn("Unsupported stage '%s' ( jail:%s, corrected:%s )" % (current_stage, jail, release))
         return False
 
 def get_patch_level(patch):
