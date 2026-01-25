@@ -45,6 +45,110 @@ Thanks to [Nicolas Curioni](https://groups.google.com/g/wazuh/c/N6-t0jTaBrY/m/8v
 
 To install **FreeBSD VD Dashboard** simply click the hamburger button and select `Dashboard Management > Saved Objects`, then import the [ndjson](wazuh-dashboard/FreeBSD_VD_Dashboard.ndjson) file.
 
+Another way to install the dashboard is through the API:
+
+```console
+$ curl -k -XPOST -u 'admin:<admin-password>' 'https://<api-endpoint>/api/saved_objects/_import?overwrite=true' -H 'osd-xsrf:true' --form file=@wazuh-dashboard/FreeBSD_VD_Dashboard.ndjson | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 92678 100  1528 100 91150  2162 128986  --:--:-- --:--:-- --:--:-- 131271
+{
+  "successCount": 10,
+  "success": true,
+  "successResults": [
+    {
+      "type": "index-pattern",
+      "id": "46d89db3-ef52-4bb3-8dea-b5eff511dbc5",
+      "meta": {
+        "title": "wazuh-alerts-*",
+        "icon": "indexPatternApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "f6be8053-3de8-487f-9d81-c48fb074666e",
+      "meta": {
+        "title": "Vulnerabilities by severity",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "926aa31b-83b7-445b-8e7f-becb64e334a4",
+      "meta": {
+        "title": "Most affected agents",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "f898846e-728e-4b94-a332-31257502bb4c",
+      "meta": {
+        "title": "Alerts severity",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "c9633b63-ccaf-4eaa-ac10-a084fa3c2feb",
+      "meta": {
+        "title": "Most common CVEs",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "65ea05ac-63b2-43f0-98cf-ad3fa9420bcc",
+      "meta": {
+        "title": "TOP affected packages alerts Evolution",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "dcaa21d2-3eaa-40fe-ad64-4fe0fb5854ba",
+      "meta": {
+        "title": "Most common CWEs",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "d7c50246-ecd1-4377-86d3-e291d2cfdfd4",
+      "meta": {
+        "title": "Top affected packages by CVEs",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "visualization",
+      "id": "4b959264-c789-4efc-9b22-ec1d9a8a3c91",
+      "meta": {
+        "title": "Agents by severity",
+        "icon": "visualizeApp"
+      },
+      "overwrite": true
+    },
+    {
+      "type": "dashboard",
+      "id": "60a86791-cea2-48d6-b10b-714f5991dd1c",
+      "meta": {
+        "title": "FreeBSD VD Dashboard",
+        "icon": "dashboardApp"
+      }
+    }
+  ]
+}
+```
+
 ## Examples
 
 1. Check if the host is vulnerable or has any vulnerable packages:
