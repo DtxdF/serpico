@@ -282,3 +282,8 @@ serpico --scan-jails
 ## Documentation
 
 * `man 1 serpico`
+
+## Known Limitations
+
+1. The STABLE branch cannot be analyzed in jails because Serpico needs the revision (the one used by SVN) to compare it with the revisions marked as vulnerable in security advisories, and since only the kernel knows this revision and not the user space, it is impossible for Serpico to know the exact version of STABLE running in jails.
+2. Serpico cannot analyze PRERELEASE and CURRENT.
