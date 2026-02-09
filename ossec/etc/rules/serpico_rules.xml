@@ -1,4 +1,4 @@
-<group name="vulnerability-detector,">
+<group name="serpico,">
   <rule id="100010" level="0">
     <decoded_as>json</decoded_as>
     <options>no_full_log</options>
