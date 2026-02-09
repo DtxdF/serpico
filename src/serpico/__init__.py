@@ -132,6 +132,9 @@ FREEBSD_VERSION_EXECUTABLE = "/bin/freebsd-version"
 # Meta keys
 META_SERPICO_ENABLED = "serpico"
 
+# Output "devices"
+LOG_STDERR = sys.stderr
+
 def main():
     try:
         start()
@@ -141,6 +144,8 @@ def main():
         sys.exit(1)
 
 def start():
+    global LOG_STDERR
+
     myuid = os.getuid()
 
     if myuid != 0:
@@ -166,8 +171,11 @@ def start():
     parser.add_argument("--nvd-api-key-file")
     parser.add_argument("--nvd-request-delay", type=float)
     parser.add_argument("--cve-lang", default=CVE_LANG)
+    parser.add_argument("--stderr-to", default=sys.stderr)
 
     args = parser.parse_args()
+
+    LOG_STDERR = open(args.stderr_to, "w")
 
     nvd_api_key_file = args.nvd_api_key_file
 
@@ -995,21 +1003,21 @@ def get_jails_v2(info):
     return jail_dict
 
 def log_info(m):
-    print("===> %s" % m, file=sys.stderr)
+    print("===> %s" % m, file=LOG_STDERR)
 
 def log_err(m):
-    print("###> %s" % m, file=sys.stderr)
+    print("###> %s" % m, file=LOG_STDERR)
 
 def log_warn(m):
-    print("##!> %s" % m, file=sys.stderr)
+    print("##!> %s" % m, file=LOG_STDERR)
 
 def print_pretty_exc(exc):
-    print("Exception:", file=sys.stderr)
-    print("", "type:", exc.__class__.__name__, file=sys.stderr)
-    print("", "error:", exc, file=sys.stderr)
+    print("Exception:", file=LOG_STDERR)
+    print("", "type:", exc.__class__.__name__, file=LOG_STDERR)
+    print("", "error:", exc, file=LOG_STDERR)
 
     with tempfile.NamedTemporaryFile(prefix="serpico", mode="w", delete=False) as fd:
-        print("", "file:", fd.name, file=sys.stderr)
+        print("", "file:", fd.name, file=LOG_STDERR)
         traceback.print_exc(file=fd)
 
 if __name__ == "__main__":
