@@ -51,20 +51,11 @@ Another way to install the dashboard is through the API:
 $ curl -k -XPOST -u 'admin:<admin-password>' 'https://<api-endpoint>/api/saved_objects/_import?overwrite=true' -H 'osd-xsrf:true' --form file=@wazuh-dashboard/FreeBSD_VD_Dashboard.ndjson | jq
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100 92678 100  1528 100 91150  2162 128986  --:--:-- --:--:-- --:--:-- 131271
+100 18888 100  1399 100 17489   833 10416   0:00:01  0:00:01 --:--:-- 11249
 {
-  "successCount": 10,
+  "successCount": 9,
   "success": true,
   "successResults": [
-    {
-      "type": "index-pattern",
-      "id": "46d89db3-ef52-4bb3-8dea-b5eff511dbc5",
-      "meta": {
-        "title": "wazuh-alerts-*",
-        "icon": "indexPatternApp"
-      },
-      "overwrite": true
-    },
     {
       "type": "visualization",
       "id": "f6be8053-3de8-487f-9d81-c48fb074666e",
@@ -143,7 +134,8 @@ $ curl -k -XPOST -u 'admin:<admin-password>' 'https://<api-endpoint>/api/saved_o
       "meta": {
         "title": "FreeBSD VD Dashboard",
         "icon": "dashboardApp"
-      }
+      },
+      "overwrite": true
     }
   ]
 }
